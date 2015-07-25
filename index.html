@@ -3,22 +3,49 @@
   <head>
     <script src="jquery.js"></script>
     <script src="data_generator.js"></script>
+    <script src="jquery.timeago.js"></script>
+    <link rel="stylesheet" type="text/css" href="main.css">
   </head>
   <body>
+    <div class="buttons" style="display: inline-block"></div>  
+    <div class="tweets-container"></div>
     <script>
 
       $(document).ready(function(){
-        var $body = $('body');
-        $body.html('');
+          var $body = $('body');
+          var tweetCountDiff = 0;
+          
+          function getCount(){
+             return streams.home.length - 1;   
+          }
+          function addTweetButton(){
+           $('<button id="add-tweet">View All Tweets!</button>').appendTo('.buttons');
+          }
 
-        var index = streams.home.length - 1;
-        while(index >= 0){
-          var tweet = streams.home[index];
-          var $tweet = $('<div></div>');
-          $tweet.text('@' + tweet.user + ': ' + tweet.message);
-          $tweet.appendTo($body);
-          index -= 1;
-        }
+          function showTweet(start, end, user){
+            user !== undefined ? user = user : user = streams.home;
+            for(var index = start; index < end; index++){
+                    var tweet = user[index];
+                    var $text = $('<div class="tweet"><a style="cursor:pointer">' + tweet.user+'</a> writes...<div id="tweet-message">' + tweet.message+ '</div>' + '<div id="tweet-date">'+$.timeago(tweet.created_at) + '</div>'+'</div>');
+                    $text.prependTo('.tweets-container');
+            }       
+          }
+
+          $('.buttons').on('click', '#add-tweet', function(){
+            var count = getCount();
+            $('.tweet').remove();
+            showTweet(0, count);  
+          });
+
+          $('.tweets-container').on('click', 'a', function(){
+            var tweetUser = $(this).text();
+            var userTweets = streams.users[tweetUser]; 
+            var tweetLength = userTweets.length-1;
+            $('.tweet').remove();
+            showTweet(0, tweetLength, userTweets);
+          });
+
+            addTweetButton();
 
       });
 

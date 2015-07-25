@@ -1,0 +1,39 @@
+body{
+ background: black;   
+}
+.tweets-container {
+    text-align: center;
+         width: 900px;
+        margin: auto;
+   padding-top: 10px;
+
+}
+
+#tweet-date, #tweet-message, a {
+    display: inline-block;
+    
+    
+}
+#tweet-date{
+    text-align: right;
+     font-size: 10px;
+         float: right;
+}
+
+.tweet {
+     border-bottom: 1px solid black;
+    padding-bottom: 10px;
+       padding-top: 10px;
+}
+
+a {
+ cursor:pointer;
+  color: blue;
+}
+
+.tweet:nth-child(even){
+    background: darkgrey;   
+}
+.tweet:nth-child(odd){
+    background: grey;   
+}
